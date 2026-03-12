@@ -62,24 +62,10 @@ public class App extends JFrame implements ActionListener {
         component.setText(component.getText() + "\n" + append);
     }
 
-    /**
-     * Loads in a folder full of songs using Song struct.
-     */
-    public Song[] loadFolder(String folderName) {
-
-    }
-
-    /**
-     * Create loadedList
-     */
-    public JList<Janel> makeList(Song songs[]) {
-        
-    }
-
     // Declare jFrame objects
     JCheckBox jpgOption, mpOption, attOption;
     JButton bGo;
-    JFileChooser pspRootFileChooser, songFileChooser;
+    JButton pspRootFileChooser, songFileChooser;
     ImageIcon logo, ezPortIcon;
     JLabel lEzPortIcon, loaded, logs, options, playlist, folder, root,
         jpgCover, mpCover, attCover;
@@ -91,7 +77,7 @@ public class App extends JFrame implements ActionListener {
     // Panels
     JPanel pAll, pHeader, pFooter, pContent, pInfo, 
 		pLoaded, pLogs, pAttribute, 
-		pChoices, pSongList;
+		pChoices, pSongList, pAtt, pSong, pCover;
 
     // Needed booleans and vars
     static int something = 0;
@@ -107,10 +93,52 @@ public class App extends JFrame implements ActionListener {
         setLayout(new BorderLayout());
         setTitle("Ez-Port");
         setFocusable(false);
-        setResizable(false);
+        setResizable(true);
 
         // Initialize components
+        jpgOption = new JCheckBox();
+        mpOption = new JCheckBox();
+        attOption = new JCheckBox();
 
+        bGo = new JButton("Import Playlist");
+
+        pspRootFileChooser = new JButton("Choose ROOT");
+        songFileChooser = new JButton("Choose Song File Folder");
+
+        logo = new ImageIcon("");
+        ezPortIcon = new ImageIcon("");
+
+        lEzPortIcon = new JLabel("Icon goes Here.");
+        loaded = new JLabel("Loaded songs...");
+        logs = new JLabel("Logs");
+        options = new JLabel("Options");
+        playlist = new JLabel("Playlist directory");
+        folder = new JLabel("Folder...");
+        root = new JLabel("Root Folder directory");
+        jpgCover = new JLabel("Convert cover format to jpg");
+        mpCover = new JLabel("Convert song format to mp3");
+        attCover = new JLabel("Change filename to title attribute");
+        
+        tfRoot = new JTextField("Enter root folder..");
+        tfPlaylist = new JTextField("Enter playlist folder..");
+        tfFolder = new JTextField("Enter folder directory...");
+
+        taLogs = new JTextArea("Logs go here...");
+
+        scrLogs = new JScrollPane(taLogs);
+        scrLoaded = new JScrollPane();
+
+        // Set component details
+        jpgOption.setSelected(true);
+        mpOption.setSelected(true);
+        attOption.setSelected(true);
+
+        bGo.setEnabled(false);
+
+
+
+        taLogs.setEditable(false);
+        taLogs.setRows(15);
 
         // Initialize panels
         pAll = new JPanel(new BorderLayout());
@@ -121,24 +149,27 @@ public class App extends JFrame implements ActionListener {
         pLoaded = new JPanel(new BorderLayout());
         pLogs = new JPanel(new BorderLayout());
         pAttribute = new JPanel(new GridLayout(5, 1));
-        pChoices = new JPanel(new GridLayout(2, 3));
+        pChoices = new JPanel(new GridLayout(1, 3));
 		pSongList = new JPanel(new BorderLayout());
+        pAtt = new JPanel(new BorderLayout());
+        pSong = new JPanel(new BorderLayout());
+        pCover = new JPanel(new BorderLayout());
 
 		// Set attributes (CSS for this, maybe?)
 
 		// Add to panels
-		pAll.add(pHeader, "North");
-		pAll.add(pContent, "Center");
-		pAll.add(pFooter, "South");
+		pAll.add(pHeader, BorderLayout.NORTH);
+		pAll.add(pContent, BorderLayout.CENTER);
+		pAll.add(pFooter, BorderLayout.SOUTH);
 
 		pHeader.add(lEzPortIcon);
 		
-		pContent.add(pInfo, "West");
-		pContent.add(pLoaded, "Center");
-		pContent.add(pLogs, "East");
+		pContent.add(pInfo, BorderLayout.WEST);
+		pContent.add(pLoaded, BorderLayout.CENTER);
+		pContent.add(pLogs, BorderLayout.EAST);
 
-        pFooter.add(options, "North");
-        pFooter.add(pChoices, "South");
+        pFooter.add(options, BorderLayout.NORTH);
+        pFooter.add(pChoices, BorderLayout.CENTER);
 
 		pInfo.add(playlist);
 		pInfo.add(tfPlaylist);
@@ -150,23 +181,30 @@ public class App extends JFrame implements ActionListener {
         pInfo.add(pspRootFileChooser);
         pInfo.add(bGo);
 
-		pLoaded.add(loaded, "North");
-		pLoaded.add(pLoaded, "North");
+		pLoaded.add(loaded, BorderLayout.NORTH);
 
-        pLogs.add(logs, "North");
-        pLogs.add(taLogs, "South");
+        pLogs.add(logs, BorderLayout.NORTH);
+        pLogs.add(taLogs, BorderLayout.SOUTH);
+
+        pAtt.add(attOption, BorderLayout.WEST);
+        pAtt.add(attCover, BorderLayout.CENTER);
         
-        pChoices.add(jpgOption);
-        pChoices.add(jpgCover);
-        pChoices.add(mpOption);
-        pChoices.add(mpCover);
-        pChoices.add(attOption);
-        pChoices.add(attCover);
+        pSong.add(mpOption, BorderLayout.WEST);
+        pSong.add(mpCover, BorderLayout.CENTER);
 
-        pLoaded.add(loadedList);
+        pCover.add(jpgOption, BorderLayout.WEST);
+        pCover.add(jpgCover, BorderLayout.CENTER);
+        
+        pChoices.add(pAtt);
+        pChoices.add(pSong);
+        pChoices.add(pCover);
+
         pLoaded.add(scrLoaded);
-
         taLogs.add(scrLogs);
+
+        add(pAll);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Last
 		setVisible(true);
@@ -182,7 +220,6 @@ public class App extends JFrame implements ActionListener {
     public static void main(String[] args) throws Exception {
 
         // Dont put anything here pretty much...
-        System.out.println("Running...");
         new App();
     }
 }
